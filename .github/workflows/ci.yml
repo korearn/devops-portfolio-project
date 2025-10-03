@@ -27,7 +27,7 @@ jobs:
       # 'run' ejecuta comandos de terminal directamente.
       # Usamos el mismo comando que en local, pero con '-d' (detached) para que corra en segundo plano.
       - name: Build and run containers
-        run: docker-compose up --build -d
+        run: docker compose up --build -d
 
       # Paso 3: Esperar a que los servicios se inicien
       # A veces los contenedores tardan unos segundos en estar 100% listos.

@@ -1,0 +1,48 @@
+# Asigna un nombre a nuestro workflow. Se mostrará en la pestaña "Actions" de GitHub.
+name: CI - Build and Test Application
+
+# 'on' define los eventos que dispararán este workflow.
+on:
+  # Lo ejecutaremos cada vez que se haga un 'push' a la rama 'main'.
+  push:
+    branches: [ "main" ]
+
+# 'jobs' agrupa todas las tareas a ejecutar. Podemos tener varios jobs.
+jobs:
+  # Nombramos nuestro único job como 'build-and-test'.
+  build-and-test:
+    # 'runs-on' especifica el tipo de máquina virtual donde se ejecutará el job.
+    # 'ubuntu-latest' es una máquina Linux mantenida por GitHub, que ya incluye Docker.
+    runs-on: ubuntu-latest
+
+    # 'steps' es la secuencia de tareas que ejecutará nuestro job.
+    steps:
+      # Paso 1: Clonar el repositorio
+      # 'uses' indica que usaremos una "acción" predefinida.
+      # 'actions/checkout' es la acción oficial para descargar tu código en la máquina virtual.
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Paso 2: Construir y levantar los contenedores con Docker Compose
+      # 'run' ejecuta comandos de terminal directamente.
+      # Usamos el mismo comando que en local, pero con '-d' (detached) para que corra en segundo plano.
+      - name: Build and run containers
+        run: docker-compose up --build -d
+
+      # Paso 3: Esperar a que los servicios se inicien
+      # A veces los contenedores tardan unos segundos en estar 100% listos.
+      # Damos un respiro de 10 segundos para asegurar que todo esté iniciado antes de probar.
+      - name: Wait for services to start
+        run: sleep 10
+
+      # Paso 4: Realizar una prueba de humo (smoke test)
+      # Esta es la parte CRÍTICA. Verificamos que la aplicación responde como se espera.
+      - name: Run smoke test
+        run: |
+          echo "Pinging frontend..."
+          curl -f http://localhost:8080
+          echo "Pinging backend API..."
+          curl -f http://localhost:5000/items
+    
+    # El flag '-f' en curl hace que el comando falle si el código de estado HTTP es un error (ej. 404, 500).
+    # Si cualquiera de estos curl falla, todo el workflow fallará, y sabremos que algo está mal.

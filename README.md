@@ -11,9 +11,35 @@ Este proyecto demuestra un ciclo de vida de desarrollo de software completo, des
 
 ## 🏛️ Diagrama de Arquitectura
 
-*(**Acción requerida:** Crea un diagrama en [draw.io](https://app.diagrams.net/) o una herramienta similar y sube la imagen a tu repositorio. Luego, reemplaza el siguiente enlace para que se muestre aquí.)*
+```mermaid
+graph TD
+    subgraph "Local Development"
+        A[👨‍💻 Developer] -->|1. git push| B(GitHub Repository);
+    end
 
-![Arquitectura CI/CD y Kubernetes](./diagrama-arquitectura.png)
+    subgraph "CI/CD Pipeline"
+        B --> C{GitHub Actions};
+        C -->|2. CI: Build & Test| D(docker-compose);
+        C -->|3. CD: Push Images| E(Docker Hub);
+    end
+
+    subgraph "Kubernetes Cluster (Production)"
+        E -->|4. Pulls Images| F[K8s Deployment];
+        F --> G1[Frontend Pods];
+        F --> G2[Backend Pods];
+        
+        subgraph "Network Routing"
+            H(🌐 User) -->|http://localhost| I{Ingress Controller};
+            I -->|path: /| J1[Frontend Service];
+            I -->|path: /api| J2[Backend Service];
+            J1 --> G1;
+            J2 --> G2;
+        end
+    end
+
+    style A fill:#f9f,stroke:#333,stroke-width:2px
+    style H fill:#9f9,stroke:#333,stroke-width:2px
+```
 
 ## 🚀 Stack Tecnológico
 

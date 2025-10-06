@@ -1,0 +1,22 @@
+# Entornos virtuales de Python
+venv/
+.venv/
+env/
+.env/
+
+# Archivos de caché y compilados de Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Archivos del sistema operativo
+.DS_Store
+Thumbs.db
+
+# Archivos de configuración de IDEs
+.vscode/
+.idea/
+
+# Archivos de dependencias (si se gestionan localmente)
+node_modules/

@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend-service
+  namespace: portfolio-app
+spec:
+  selector:
+    app: frontend
+  # Ya no necesitamos type: NodePort. ClusterIP es el valor por defecto.
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80

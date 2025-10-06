@@ -1,0 +1,22 @@
+# kubernetes/ingress-backend.yml (NUEVO ARCHIVO SOLO PARA EL BACKEND)
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: backend-ingress
+  namespace: portfolio-app
+  annotations:
+    # La anotación de reescritura ahora solo afecta a este recurso.
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: localhost
+    http:
+      paths:
+      - path: /api(/|$)(.*)
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: backend-service
+            port:
+              number: 5000

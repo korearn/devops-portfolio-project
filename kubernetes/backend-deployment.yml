@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-deployment
+  namespace: portfolio-app
+spec:
+  replicas: 1 # Queremos que 1 Pod esté siempre corriendo.
+  selector:
+    matchLabels:
+      app: backend # El Deployment busca Pods con esta etiqueta.
+  template:
+    metadata:
+      labels:
+        app: backend # Le asignamos esta etiqueta a nuestros Pods.
+    spec:
+      containers:
+        - name: backend-container
+          # ¡Aquí es donde le decimos a K8s que use la imagen de Docker Hub!
+          image: lxnrdxln/devops-portfolio-backend:latest
+          ports:
+            - containerPort: 5000 # El puerto que expone nuestra app Flask.

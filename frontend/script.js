@@ -1,6 +1,6 @@
 // Definimos la URL base de nuestra API.
 // Asegúrate de que coincida con el puerto donde corre tu backend.
-const API_URL = 'http://127.0.0.1:5000';
+const API_URL = '/api';
 
 // Obtenemos referencias a los elementos del HTML con los que vamos a interactuar.
 const itemsList = document.getElementById('items-list');

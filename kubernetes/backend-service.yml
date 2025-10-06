@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-service
+  namespace: portfolio-app
+spec:
+  selector:
+    app: backend # Envía tráfico a los Pods con la etiqueta 'app: backend'.
+  ports:
+    - protocol: TCP
+      port: 5000       # El puerto del Service.
+      targetPort: 5000 # El puerto del Pod al que se redirige el tráfico.
